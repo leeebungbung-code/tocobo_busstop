@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>서울버스 노선 분석</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f0ede8;color:#1a1a1a;font-size:15px;line-height:1.6;min-height:100vh}
+.header{background:#1a1a1a;color:#f0ede8;padding:18px 16px 0}
+.header-sub{font-size:10px;letter-spacing:.14em;color:#666;text-transform:uppercase;margin-bottom:3px}
+.header h1{font-size:21px;font-weight:700;letter-spacing:-.02em}
+.header-meta{font-size:11px;color:#666;margin-top:3px;padding-bottom:12px}
+.tabs{background:#1a1a1a;display:flex;overflow-x:auto;padding:0 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 13px 11px;font-size:13px;color:#666;cursor:pointer;border-bottom:2px solid transparent;font-weight:500;white-space:nowrap;transition:color .15s}
+.tab.active{color:#f0ede8;border-bottom-color:#f0ede8}
+.section{display:none;padding:14px 14px 48px}
+.section.active{display:block}
+.sec-label{font-size:10px;letter-spacing:.1em;color:#999;text-transform:uppercase;font-weight:600;margin:14px 0 8px}
+.sec-label:first-child{margin-top:4px}
+.card{background:#fff;border-radius:12px;padding:13px 14px;margin-bottom:9px;border:.5px solid rgba(0,0,0,.09)}
+.card-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.stop-name{font-size:14px;font-weight:600;color:#1a1a1a;flex:1;min-width:0;word-break:keep-all;line-height:1.4}
+.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.pill-dark{background:#1a1a1a;color:#f0ede8}
+.pill-mid{background:#e8e5df;color:#555}
+.bar-wrap{height:3px;background:#f0ede8;border-radius:2px;margin:8px 0 7px}
+.bar{height:3px;border-radius:2px;background:#1a1a1a}
+.naver-link{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#03c75a;text-decoration:none;font-weight:500}
+.grade-SSA{background:#1a1a1a;color:#f0ede8;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px}
+.grade-SA{background:#e8e5df;color:#555;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px}
+.grade-A{background:#f0ede8;color:#888;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px}
+.route-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.route-num{font-size:19px;font-weight:700;color:#1a1a1a;line-height:1}
+.route-co{font-size:12px;color:#aaa;margin-bottom:4px}
+.divider{height:.5px;background:rgba(0,0,0,.07);margin:9px 0}
+.route-summary{font-size:13px;color:#666;line-height:1.55}
+.stop-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.chip{font-size:11px;padding:3px 8px;border-radius:4px;background:#f0ede8;color:#666;border:.5px solid rgba(0,0,0,.08)}
+.chip-hl{background:#1a1a1a;color:#f0ede8;border-color:transparent}
+.metric-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.metric{background:#fff;border-radius:10px;padding:12px 13px;border:.5px solid rgba(0,0,0,.09)}
+.metric-label{font-size:11px;color:#aaa;margin-bottom:3px}
+.metric-value{font-size:23px;font-weight:700;color:#1a1a1a;line-height:1}
+.metric-unit{font-size:12px;color:#aaa;margin-left:1px;font-weight:400}
+.metric-text{font-size:13px;font-weight:600;color:#555;margin-top:5px}
+.info-box{background:#fff;border-radius:12px;padding:13px 14px;margin-bottom:9px;border:.5px solid rgba(0,0,0,.09);font-size:13px;color:#666;line-height:1.7}
+.compare-title{font-size:14px;font-weight:600;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+table{width:100%;border-collapse:collapse}
+td{padding:6px 3px;border-bottom:.5px solid rgba(0,0,0,.06);font-size:13px;vertical-align:top}
+td:first-child{color:#aaa;width:50%}
+td:last-child{font-weight:500;color:#1a1a1a;text-align:right}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-sub">서울버스 외부광고 · 70대 노선</div>
+  <h1>버스 노선 분석</h1>
+  <div class="header-meta">2026년 5월 18일 기준 · 총 59개 노선</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="show('overlap',this)">중첩 정류장</div>
+  <div class="tab" onclick="show('gosok',this)">고속터미널</div>
+  <div class="tab" onclick="show('gangnam',this)">강남역</div>
+  <div class="tab" onclick="show('hongdae',this)">홍대입구</div>
+  <div class="tab" onclick="show('compare',this)">비교</div>
+</div>
+
+<div id="tab-overlap" class="section active">
+  <div class="sec-label">노선 중첩 상위 10개 정류장</div>
+  <div id="stop-list"></div>
+</div>
+
+<div id="tab-gosok" class="section">
+  <div class="metric-row">
+    <div class="metric">
+      <div class="metric-label">경유 노선 수</div>
+      <div class="metric-value">9<span class="metric-unit">개</span></div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">중첩 횟수 순위</div>
+      <div class="metric-value" style="font-size:16px;margin-top:4px;">공동 <span style="font-size:22px">1</span>위</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-size:12px;color:#aaa;margin-bottom:3px">정류장명</div>
+    <div style="font-size:15px;font-weight:600">고속터미널</div>
+    <div style="margin-top:8px">
+      <a class="naver-link" href="https://map.naver.com/v5/search/%EA%B3%A0%EC%86%8D%ED%84%B0%EB%AF%B8%EB%84%90+%EB%B2%84%EC%8A%A4%EC%A0%95%EB%A5%98%EC%9E%A5" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#03c75a" stroke-width="2.5" width="13" height="13"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        네이버 지도에서 보기
+      </a>
+    </div>
+  </div>
+  <div class="sec-label">경유 노선 목록</div>
+  <div id="gosok-routes"></div>
+</div>
+
+<div id="tab-gangnam" class="section">
+  <div class="metric-row">
+    <div class="metric">
+      <div class="metric-label">경유 노선 수</div>
+      <div class="metric-value">9<span class="metric-unit">개</span></div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">등급 구성</div>
+      <div style="margin-top:6px"><span class="grade-SSA">SSA</span> <span style="font-size:12px;color:#aaa">전체</span></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-size:12px;color:#aaa;margin-bottom:7px">실제 정류장 구분</div>
+    <table>
+      <tr><td>지하철2호선강남역</td><td>7개 노선</td></tr>
+      <tr><td>신분당선강남역</td><td>7개 노선</td></tr>
+      <tr><td>기타 명칭</td><td>5개 정류장 분산</td></tr>
+    </table>
+  </div>
+  <div class="sec-label">경유 노선 목록</div>
+  <div id="gangnam-routes"></div>
+</div>
+
+<div id="tab-hongdae" class="section">
+  <div class="metric-row">
+    <div class="metric">
+      <div class="metric-label">경유 노선 수</div>
+      <div class="metric-value">5<span class="metric-unit">개</span></div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">정류장 형태</div>
+      <div class="metric-text">단일 정류장</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-size:12px;color:#aaa;margin-bottom:3px">정류장명</div>
+    <div style="font-size:15px;font-weight:600">홍대입구역</div>
+    <div style="margin-top:8px">
+      <a class="naver-link" href="https://map.naver.com/v5/search/%ED%99%8D%EB%8C%80%EC%9E%85%EA%B5%AC%EC%97%AD+%EB%B2%84%EC%8A%A4%EC%A0%95%EB%A5%98%EC%9E%A5" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#03c75a" stroke-width="2.5" width="13" height="13"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        네이버 지도에서 보기
+      </a>
+    </div>
+  </div>
+  <div class="sec-label">경유 노선 목록</div>
+  <div id="hongdae-routes"></div>
+</div>
+
+<div id="tab-compare" class="section">
+  <div class="sec-label">3개 정류장 비교</div>
+  <div class="card">
+    <div class="compare-title"><span class="dot" style="background:#1a1a1a"></span>고속터미널</div>
+    <table>
+      <tr><td>경유 노선</td><td>9개</td></tr>
+      <tr><td>중첩 횟수</td><td>18회 (공동 1위)</td></tr>
+      <tr><td>등급 구성</td><td>SSA 6 · SA 3</td></tr>
+      <tr><td>정류장 형태</td><td>단일 명칭</td></tr>
+      <tr><td>주요 방면</td><td>잠실·반포·강남·영등포</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="compare-title"><span class="dot" style="background:#e24b4a"></span>강남역</div>
+    <table>
+      <tr><td>경유 노선</td><td>9개</td></tr>
+      <tr><td>최다 중첩</td><td>13회 (2호선·신분당선)</td></tr>
+      <tr><td>등급 구성</td><td>SSA 9</td></tr>
+      <tr><td>정류장 형태</td><td>7개 명칭 분산</td></tr>
+      <tr><td>주요 방면</td><td>종로·여의도·용산·잠실</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="compare-title"><span class="dot" style="background:#03c75a"></span>홍대입구</div>
+    <table>
+      <tr><td>경유 노선</td><td>5개</td></tr>
+      <tr><td>중첩 횟수</td><td>9회 (왕복 포함)</td></tr>
+      <tr><td>등급 구성</td><td>SA 4 · A 1</td></tr>
+      <tr><td>정류장 형태</td><td>단일 명칭</td></tr>
+      <tr><td>주요 방면</td><td>신촌·목동·상암·종로</td></tr>
+    </table>
+  </div>
+  <div class="info-box">
+    고속터미널은 SSA+SA 혼합으로 가장 폭넓은 등급 커버리지. 강남역은 SSA 전용이지만 정류장 명칭이 분산. 홍대입구는 노선 수 적지만 단일 정류장으로 집중도 높음.
+  </div>
+</div>
+
+<script>
+const stops=[
+  {name:'수유시장.성신여대미아캠퍼스앞',count:18},
+  {name:'미아역.신일중고',count:18},
+  {name:'도봉세무서.성북시장',count:18},
+  {name:'미아사거리역',count:18},
+  {name:'고속터미널',count:18},
+  {name:'미아리고개.미아리예술극장',count:16},
+  {name:'돈암사거리.성신여대입구',count:16},
+  {name:'삼선교.한성대학교',count:16},
+  {name:'논현역',count:16},
+  {name:'뱅뱅사거리',count:16}
+];
+const gosokRoutes=[
+  {route:'143',grade:'SSA',company:'대진여객',summary:'압구정·삼성 · 종로 · 대학로'},
+  {route:'360',grade:'SSA',company:'한국비알티자동차',summary:'테헤란로 · 잠실 · 여의도'},
+  {route:'452',grade:'SSA',company:'남성교통',summary:'강남대로 · 고속터미널 · 반포 · 흑석동'},
+  {route:'640',grade:'SSA',company:'중부운수',summary:'강남 · 영등포 · 목동'},
+  {route:'0411',grade:'SSA',company:'대원여객',summary:'용산역 · 이촌동 · 반포 · 교대역 · 강남역 · 양재역'},
+  {route:'4212',grade:'SSA',company:'우신운수',summary:'도산대로 · 사당 · 건대'},
+  {route:'142',grade:'SA',company:'아진교통',summary:'반포 · 고속터미널 · 논현사거리 · 신사역 · 돈암동'},
+  {route:'148',grade:'SA',company:'한성운수',summary:'고속터미널 · 신사역 · 압구정역 · 고대앞 · 수유역'},
+  {route:'345',grade:'SA',company:'태진운수',summary:'위례신도시 · 세곡동 · 송파 · 청담 · 압구정 · 고속터미널'}
+];
+const gangnamRoutes=[
+  {route:'140',grade:'SSA',company:'한국비알티자동차',summary:'강남대로 · 종로 · 대학로',stops:['지하철2호선강남역','신분당선강남역']},
+  {route:'360',grade:'SSA',company:'한국비알티자동차',summary:'테헤란로 · 잠실 · 여의도',stops:['지하철2호선강남역','강남역12번출구','강남역.역삼세무서']},
+  {route:'400',grade:'SSA',company:'삼성여객',summary:'강남대로 · 양재 · 한남동 · 남대문',stops:['지하철2호선강남역','신분당선강남역']},
+  {route:'421',grade:'SSA',company:'삼성여객',summary:'강남대로 · 이태원 · 명동',stops:['지하철2호선강남역','신분당선강남역','강남역','강남역하나은행']},
+  {route:'441',grade:'SSA',company:'우신버스',summary:'강남대로 · 뱅뱅사거리 · 양재역',stops:['지하철2호선강남역','신분당선강남역']},
+  {route:'452',grade:'SSA',company:'남성교통',summary:'강남대로 · 고속터미널 · 반포 · 흑석동',stops:['지하철2호선강남역','신분당선강남역']},
+  {route:'470',grade:'SSA',company:'다모아자동차',summary:'강남대로 · 종로 · 연세대',stops:['지하철2호선강남역','신분당선강남역']},
+  {route:'640',grade:'SSA',company:'중부운수',summary:'강남 · 영등포 · 목동',stops:['강남역','강남역.강남역사거리']},
+  {route:'0411',grade:'SSA',company:'대원여객',summary:'용산역 · 이촌동 · 반포 · 교대역 · 양재역',stops:['신분당선강남역']}
+];
+const hongdaeRoutes=[
+  {route:'273',grade:'SA',company:'메트로',summary:'신촌 · 홍대 · 종로 · 대학로 · 고대·경희대'},
+  {route:'602',grade:'SA',company:'오케이버스',summary:'광화문 · 이대역 · 신촌역 · 홍대역 · 목동'},
+  {route:'5714',grade:'SA',company:'보영운수',summary:'신촌 · 홍대 · 영등포'},
+  {route:'6716',grade:'SA',company:'세풍운수',summary:'이대 · 신촌홍대 · 온수역 · 신정네거리'},
+  {route:'7711',grade:'A',company:'신촌교통',summary:'홍대 · 상암'}
+];
+
+function pin(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="#03c75a" stroke-width="2.5" width="13" height="13"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>';
+}
+
+// Overlap stops
+const sl=document.getElementById('stop-list');
+stops.forEach(s=>{
+  const pct=Math.round(s.count/18*100);
+  const q=encodeURIComponent(s.name+' 버스정류장');
+  sl.innerHTML+=`<div class="card">
+    <div class="card-row">
+      <div class="stop-name">${s.name}</div>
+      <div class="pill ${s.count===18?'pill-dark':'pill-mid'}">${s.count}회</div>
+    </div>
+    <div class="bar-wrap"><div class="bar" style="width:${pct}%"></div></div>
+    <a class="naver-link" href="https://map.naver.com/v5/search/${q}" target="_blank">${pin()} 지도 보기</a>
+  </div>`;
+});
+
+function renderRoutes(id, routes, showStops){
+  const el=document.getElementById(id);
+  if(!el) return;
+  routes.forEach(r=>{
+    const chips = showStops && r.stops
+      ? '<div class="stop-chips">'+r.stops.map(s=>`<span class="chip chip-hl">${s}</span>`).join('')+'</div>'
+      : '';
+    el.innerHTML+=`<div class="card">
+      <div class="route-header">
+        <div class="route-num">${r.route}</div>
+        <span class="grade-${r.grade}">${r.grade}</span>
+      </div>
+      <div class="route-co">${r.company}</div>
+      <div class="divider"></div>
+      <div class="route-summary">${r.summary}</div>
+      ${chips}
+    </div>`;
+  });
+}
+
+renderRoutes('gosok-routes', gosokRoutes, false);
+renderRoutes('gangnam-routes', gangnamRoutes, true);
+renderRoutes('hongdae-routes', hongdaeRoutes, false);
+
+function show(id, el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

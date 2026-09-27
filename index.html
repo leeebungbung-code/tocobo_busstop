@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://invitation.ddssartvill.com/images/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@400;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 /* ── 기획안 팔레트 ─────────────────────────────
    폰트/굵기는 아래 --font-* 만 바꾸면 전체에 반영돼요. */
@@ -30,8 +30,8 @@
   --paper:#f3fafd;      /* 페이지 바탕 (아주 옅은 하늘색) */
   --paper-2:#e3f4fb;
   --line:rgba(60,140,190,.28);
-  --font-ko:'Gowun Batang',serif;
-  --font-script:'Pinyon Script',cursive;
+  --font-ko:'Hahmlet',serif;
+  --font-script:'UnifrakturMaguntia',serif;
   --title-weight:700;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -64,14 +64,14 @@ section{padding:64px 24px;text-align:center;position:relative}
 }
 .script::before{
   content:attr(data-text);position:absolute;inset:0;z-index:-1;
-  -webkit-text-stroke:.34em var(--sky-2);color:var(--sky-2);
+  -webkit-text-stroke:.24em var(--sky-2);color:var(--sky-2);
 }
 .script{isolation:isolate}
 
 /* ── 1. 커버 ─────────────────────────── */
 .cover{padding:36px 20px 56px}
 .cover .ribbon{font-size:34px;line-height:1;color:var(--brown)}
-.cover .invited{font-size:30px;margin-top:10px}
+.cover .invited{font-size:25px;margin-top:10px}
 .cover h1{
   font-size:25px;font-weight:var(--title-weight);letter-spacing:.14em;
   margin-top:12px;

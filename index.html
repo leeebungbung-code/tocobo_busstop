@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<meta name="theme-color" content="#fbf7f0">
+<meta name="theme-color" content="#e3f4fb">
 <title>소희랑 태승이 결혼합니다</title>
 <meta name="description" content="2026.11.29 일요일 오후 2시 40분 · 더 베뉴지 서울 2층 베뉴지 홀">
 <!-- 공유 미리보기(카카오톡 등)는 절대 주소가 필요해요. 배포 주소가 바뀌면 og:url, og:image도 같이 바꿔 주세요. -->
@@ -24,11 +24,12 @@
   --cocoa:#4a3933;
   --wine:#320814;
   --red:#d6001c;        /* 강조 (10주년 파티) */
-  --sky:#c5eaf6;        /* 영문 스티커 테두리 */
+  --sky:#c5eaf6;        /* 메인 테마 하늘색 */
   --sky-2:#a7d9fd;
-  --paper:#fbf7f0;
-  --paper-2:#f4ede2;
-  --line:rgba(96,53,5,.16);
+  --sky-3:#2f86be;      /* 버튼용 진한 하늘색 */
+  --paper:#f3fafd;      /* 페이지 바탕 (아주 옅은 하늘색) */
+  --paper-2:#e3f4fb;
+  --line:rgba(60,140,190,.28);
   --font-ko:'Gowun Batang',serif;
   --font-script:'Pinyon Script',cursive;
   --title-weight:700;
@@ -36,7 +37,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{
-  background:#ebe3d6;
+  background:var(--sky);
   color:var(--brown);
   font-family:var(--font-ko);
   font-size:15px;line-height:1.9;letter-spacing:.04em;
@@ -50,8 +51,8 @@ a{color:inherit}
   max-width:480px;margin:0 auto;min-height:100vh;overflow:hidden;
   background-color:var(--paper);
   /* 은은한 종이 질감 */
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .38 0 0 0 0 .21 0 0 0 0 .02 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  box-shadow:0 0 40px rgba(50,8,20,.08);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .55 0 0 0 0 .75 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  box-shadow:0 0 40px rgba(40,110,160,.18);
 }
 section{padding:64px 24px;text-align:center;position:relative}
 .divider{width:40px;height:1px;background:var(--line);margin:0 auto}
@@ -63,7 +64,7 @@ section{padding:64px 24px;text-align:center;position:relative}
 }
 .script::before{
   content:attr(data-text);position:absolute;inset:0;z-index:-1;
-  -webkit-text-stroke:.34em var(--sky);color:var(--sky);
+  -webkit-text-stroke:.34em var(--sky-2);color:var(--sky-2);
 }
 .script{isolation:isolate}
 
@@ -113,13 +114,13 @@ section{padding:64px 24px;text-align:center;position:relative}
 .names .name small{font-size:12px;font-weight:400;letter-spacing:.08em;margin-right:6px;color:var(--cocoa)}
 
 /* ── 3. Wedding Day ─────────────────── */
-.day{background:rgba(197,234,246,.28)}
+.day{background:var(--sky)}
 .section-title{font-size:40px}
 .day .date-ko{margin-top:10px;font-size:15px;letter-spacing:.1em}
 .cal-wrap{position:relative;margin:26px auto 0;max-width:360px;padding:52px 18px 40px}
 .cal-wrap::before{
   /* 기획안 참고 이미지처럼 크게 깔리는 하트 */
-  content:"";position:absolute;inset:0;z-index:0;background:var(--sky);opacity:.75;
+  content:"";position:absolute;inset:0;z-index:0;background:#fff;opacity:.8;
   clip-path:polygon(50% 17%,62% 5%,80% 1%,95% 9%,100% 26%,96% 46%,82% 66%,50% 100%,18% 66%,4% 46%,0% 26%,5% 9%,20% 1%,38% 5%);
 }
 .cal{position:relative;z-index:1;display:grid;grid-template-columns:repeat(7,1fr);row-gap:6px;font-size:14px}
@@ -165,7 +166,7 @@ section{padding:64px 24px;text-align:center;position:relative}
 
 /* ── 6. 공유 / 푸터 ─────────────────── */
 .share{display:flex;gap:10px;justify-content:center;margin-top:20px}
-.share button{padding:12px 20px;font-size:14px;border-radius:999px;background:var(--wine);color:var(--paper)}
+.share button{padding:12px 20px;font-size:14px;border-radius:999px;background:var(--sky-3);color:#fff}
 .share button.ghost{background:#fff;color:var(--brown);border:1px solid var(--line)}
 footer{padding:28px 24px 48px;text-align:center;font-size:11px;color:var(--cocoa);opacity:.7}
 

@@ -2,281 +2,399 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>서울버스 노선 분석</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#fbf7f0">
+<title>소희랑 태승이 결혼합니다</title>
+<meta name="description" content="2026.11.29 일요일 오후 2시 40분 · 더 베뉴지 서울 2층 베뉴지 홀">
+<!-- 공유 미리보기(카카오톡 등)는 절대 주소가 필요해요. 배포 주소가 바뀌면 og:url, og:image도 같이 바꿔 주세요. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="소희랑 태승이 결혼합니다">
+<meta property="og:description" content="2026.11.29 일요일 오후 2시 40분 · 더 베뉴지 서울 2층 베뉴지 홀">
+<meta property="og:url" content="https://invitation.ddssartvill.com/">
+<meta property="og:image" content="https://invitation.ddssartvill.com/images/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
+/* ── 기획안 팔레트 ─────────────────────────────
+   폰트/굵기는 아래 --font-* 만 바꾸면 전체에 반영돼요. */
+:root{
+  --brown:#603505;      /* 본문 글자 */
+  --cocoa:#4a3933;
+  --wine:#320814;
+  --red:#d6001c;        /* 강조 (10주년 파티) */
+  --sky:#c5eaf6;        /* 영문 스티커 테두리 */
+  --sky-2:#a7d9fd;
+  --paper:#fbf7f0;
+  --paper-2:#f4ede2;
+  --line:rgba(96,53,5,.16);
+  --font-ko:'Gowun Batang',serif;
+  --font-script:'Pinyon Script',cursive;
+  --title-weight:700;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f0ede8;color:#1a1a1a;font-size:15px;line-height:1.6;min-height:100vh}
-.header{background:#1a1a1a;color:#f0ede8;padding:18px 16px 0}
-.header-sub{font-size:10px;letter-spacing:.14em;color:#666;text-transform:uppercase;margin-bottom:3px}
-.header h1{font-size:21px;font-weight:700;letter-spacing:-.02em}
-.header-meta{font-size:11px;color:#666;margin-top:3px;padding-bottom:12px}
-.tabs{background:#1a1a1a;display:flex;overflow-x:auto;padding:0 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{padding:10px 13px 11px;font-size:13px;color:#666;cursor:pointer;border-bottom:2px solid transparent;font-weight:500;white-space:nowrap;transition:color .15s}
-.tab.active{color:#f0ede8;border-bottom-color:#f0ede8}
-.section{display:none;padding:14px 14px 48px}
-.section.active{display:block}
-.sec-label{font-size:10px;letter-spacing:.1em;color:#999;text-transform:uppercase;font-weight:600;margin:14px 0 8px}
-.sec-label:first-child{margin-top:4px}
-.card{background:#fff;border-radius:12px;padding:13px 14px;margin-bottom:9px;border:.5px solid rgba(0,0,0,.09)}
-.card-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.stop-name{font-size:14px;font-weight:600;color:#1a1a1a;flex:1;min-width:0;word-break:keep-all;line-height:1.4}
-.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-.pill-dark{background:#1a1a1a;color:#f0ede8}
-.pill-mid{background:#e8e5df;color:#555}
-.bar-wrap{height:3px;background:#f0ede8;border-radius:2px;margin:8px 0 7px}
-.bar{height:3px;border-radius:2px;background:#1a1a1a}
-.naver-link{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#03c75a;text-decoration:none;font-weight:500}
-.grade-SSA{background:#1a1a1a;color:#f0ede8;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px}
-.grade-SA{background:#e8e5df;color:#555;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px}
-.grade-A{background:#f0ede8;color:#888;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px}
-.route-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.route-num{font-size:19px;font-weight:700;color:#1a1a1a;line-height:1}
-.route-co{font-size:12px;color:#aaa;margin-bottom:4px}
-.divider{height:.5px;background:rgba(0,0,0,.07);margin:9px 0}
-.route-summary{font-size:13px;color:#666;line-height:1.55}
-.stop-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.chip{font-size:11px;padding:3px 8px;border-radius:4px;background:#f0ede8;color:#666;border:.5px solid rgba(0,0,0,.08)}
-.chip-hl{background:#1a1a1a;color:#f0ede8;border-color:transparent}
-.metric-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
-.metric{background:#fff;border-radius:10px;padding:12px 13px;border:.5px solid rgba(0,0,0,.09)}
-.metric-label{font-size:11px;color:#aaa;margin-bottom:3px}
-.metric-value{font-size:23px;font-weight:700;color:#1a1a1a;line-height:1}
-.metric-unit{font-size:12px;color:#aaa;margin-left:1px;font-weight:400}
-.metric-text{font-size:13px;font-weight:600;color:#555;margin-top:5px}
-.info-box{background:#fff;border-radius:12px;padding:13px 14px;margin-bottom:9px;border:.5px solid rgba(0,0,0,.09);font-size:13px;color:#666;line-height:1.7}
-.compare-title{font-size:14px;font-weight:600;margin-bottom:9px;display:flex;align-items:center;gap:7px}
-.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
-table{width:100%;border-collapse:collapse}
-td{padding:6px 3px;border-bottom:.5px solid rgba(0,0,0,.06);font-size:13px;vertical-align:top}
-td:first-child{color:#aaa;width:50%}
-td:last-child{font-weight:500;color:#1a1a1a;text-align:right}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:#ebe3d6;
+  color:var(--brown);
+  font-family:var(--font-ko);
+  font-size:15px;line-height:1.9;letter-spacing:.04em;
+  word-break:keep-all;
+}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+
+.page{
+  max-width:480px;margin:0 auto;min-height:100vh;overflow:hidden;
+  background-color:var(--paper);
+  /* 은은한 종이 질감 */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .38 0 0 0 0 .21 0 0 0 0 .02 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  box-shadow:0 0 40px rgba(50,8,20,.08);
+}
+section{padding:64px 24px;text-align:center;position:relative}
+.divider{width:40px;height:1px;background:var(--line);margin:0 auto}
+
+/* 영문 스티커 글씨 (하늘색 테두리) */
+.script{
+  font-family:var(--font-script);font-weight:400;color:var(--wine);
+  position:relative;display:inline-block;letter-spacing:0;line-height:1.2;
+}
+.script::before{
+  content:attr(data-text);position:absolute;inset:0;z-index:-1;
+  -webkit-text-stroke:.34em var(--sky);color:var(--sky);
+}
+.script{isolation:isolate}
+
+/* ── 1. 커버 ─────────────────────────── */
+.cover{padding:36px 20px 56px}
+.cover .ribbon{font-size:34px;line-height:1;color:var(--brown)}
+.cover .invited{font-size:30px;margin-top:10px}
+.cover h1{
+  font-size:25px;font-weight:var(--title-weight);letter-spacing:.14em;
+  margin-top:12px;
+}
+.art{position:relative;margin:22px auto 0;width:100%}
+.art .heart{width:84%;margin:0 auto;animation:float 5s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(50,8,20,.15))}
+.sticker{position:absolute;pointer-events:none}
+.s-hearts{left:3%;top:4%;width:21%;transform:rotate(-8deg)}
+.s-note{right:1%;top:-4%;width:18%;transform:rotate(10deg)}
+.s-l{left:10%;bottom:-2%;width:12%;transform:rotate(-14deg)}
+.s-r{right:6%;bottom:2%;width:13%;transform:rotate(12deg)}
+@keyframes float{50%{transform:translateY(-6px) rotate(-.6deg)}}
+
+.greeting{margin-top:36px;font-size:15px;line-height:2.1}
+.greeting .hl{color:var(--red);font-weight:700}
+
+.strip{margin:40px -20px 0;width:calc(100% + 40px);max-width:none}
+.when{margin-top:28px;font-size:16px;line-height:1.9;letter-spacing:.12em}
+.when b{font-weight:700}
+
+/* ── 2. 커플 ─────────────────────────── */
+.couple{padding-top:24px}
+.photo{position:relative;border-radius:4px;overflow:visible}
+.photo .main{width:100%;border-radius:4px;box-shadow:0 6px 20px rgba(50,8,20,.12)}
+.baby{
+  position:absolute;border-radius:50%;overflow:hidden;
+  border:4px solid #fff;box-shadow:0 4px 12px rgba(50,8,20,.25);
+  aspect-ratio:1;animation:blink 2.4s steps(1,end) infinite;
+}
+.baby img{width:100%;height:100%;object-fit:cover}
+.baby.groom{left:-2%;top:10%;width:23%;transform:rotate(-6deg)}
+.baby.bride{right:4%;top:12%;width:27%;transform:rotate(5deg);animation-delay:1.2s}
+@keyframes blink{0%{opacity:1}50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  .baby,.art .heart{animation:none}
+}
+.names{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px}
+.names .parents{font-size:13px;color:var(--cocoa);letter-spacing:.02em}
+.names .name{font-size:21px;font-weight:700;letter-spacing:.2em;margin-top:2px}
+.names .name small{font-size:12px;font-weight:400;letter-spacing:.08em;margin-right:6px;color:var(--cocoa)}
+
+/* ── 3. Wedding Day ─────────────────── */
+.day{background:rgba(197,234,246,.28)}
+.section-title{font-size:40px}
+.day .date-ko{margin-top:10px;font-size:15px;letter-spacing:.1em}
+.cal-wrap{position:relative;margin:26px auto 0;max-width:360px;padding:52px 18px 40px}
+.cal-wrap::before{
+  /* 기획안 참고 이미지처럼 크게 깔리는 하트 */
+  content:"";position:absolute;inset:0;z-index:0;background:var(--sky);opacity:.75;
+  clip-path:polygon(50% 17%,62% 5%,80% 1%,95% 9%,100% 26%,96% 46%,82% 66%,50% 100%,18% 66%,4% 46%,0% 26%,5% 9%,20% 1%,38% 5%);
+}
+.cal{position:relative;z-index:1;display:grid;grid-template-columns:repeat(7,1fr);row-gap:6px;font-size:14px}
+.cal .dow{font-size:11px;letter-spacing:.08em;color:var(--cocoa);padding-bottom:6px}
+.cal .dow.sun,.cal .d.sun{color:var(--red)}
+.cal .d{height:34px;display:flex;align-items:center;justify-content:center;position:relative}
+.cal .d.on{color:#fff;font-weight:700}
+.cal .d.on::before{
+  content:"";position:absolute;width:34px;height:34px;z-index:-1;background:var(--red);
+  clip-path:path("M17 31 C 6 23 1 16 1 10 C 1 5 5 2 9.5 2 C 13 2 15.5 4 17 7 C 18.5 4 21 2 24.5 2 C 29 2 33 5 33 10 C 33 16 28 23 17 31 Z");
+}
+.dday{margin-top:28px}
+.count{display:flex;justify-content:center;gap:10px;margin-top:14px}
+.count div{min-width:56px;padding:8px 4px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.count b{display:block;font-size:22px;line-height:1.2}
+.count span{font-size:10px;letter-spacing:.1em;color:var(--cocoa)}
+.dday p{margin-top:16px;font-size:14px}
+.dday p em{font-style:normal;color:var(--red);font-weight:700}
+
+/* ── 4. 오시는 길 ───────────────────── */
+.venue-name{margin-top:18px;font-size:18px;font-weight:700;letter-spacing:.12em}
+.venue-addr{font-size:14px;color:var(--cocoa)}
+.venue-tel{display:inline-block;margin-top:4px;font-size:13px;text-decoration:none;border-bottom:1px solid var(--line)}
+.map-btns{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.map-btns a{flex:1;max-width:130px;padding:10px 0;font-size:13px;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:999px}
+.guide{margin-top:32px;text-align:left;border-top:1px solid var(--line)}
+.guide dl{padding:16px 4px;border-bottom:1px solid var(--line)}
+.guide dt{font-weight:700;font-size:14px;margin-bottom:4px}
+.guide dd{font-size:14px;color:var(--cocoa);line-height:1.8}
+
+/* ── 5. 마음 전하실 곳 ───────────────── */
+.gift p.lead{margin-top:14px;font-size:14px}
+.acc{margin-top:14px;text-align:left;border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden}
+.acc summary{list-style:none;padding:14px 16px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;cursor:pointer}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"＋";font-weight:400}
+.acc[open] summary::after{content:"－"}
+.acc .row{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid var(--line);font-size:13px}
+.acc .row div{flex:1;min-width:0;line-height:1.6}
+.acc .row b{display:block;font-size:14px}
+.copy{flex-shrink:0;padding:6px 12px;font-size:12px;border:1px solid var(--line);border-radius:999px}
+.copy:disabled{opacity:.4;cursor:default}
+
+/* ── 6. 공유 / 푸터 ─────────────────── */
+.share{display:flex;gap:10px;justify-content:center;margin-top:20px}
+.share button{padding:12px 20px;font-size:14px;border-radius:999px;background:var(--wine);color:var(--paper)}
+.share button.ghost{background:#fff;color:var(--brown);border:1px solid var(--line)}
+footer{padding:28px 24px 48px;text-align:center;font-size:11px;color:var(--cocoa);opacity:.7}
+
+.toast{
+  position:fixed;left:50%;bottom:32px;transform:translate(-50%,20px);
+  padding:10px 18px;border-radius:999px;background:var(--wine);color:var(--paper);font-size:13px;
+  opacity:0;transition:.25s;pointer-events:none;z-index:10;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* 스크롤하면 살짝 떠오르는 효과 */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
+<main class="page">
 
-<div class="header">
-  <div class="header-sub">서울버스 외부광고 · 70대 노선</div>
-  <h1>버스 노선 분석</h1>
-  <div class="header-meta">2026년 5월 18일 기준 · 총 59개 노선</div>
-</div>
+  <!-- 1. 커버 -->
+  <section class="cover">
+    <div class="ribbon" aria-hidden="true">❥</div>
+    <div class="script invited" data-text="You're Invited to Our Party!">You're Invited to Our Party!</div>
+    <h1>소희랑 태승이 결혼합니다</h1>
 
-<div class="tabs">
-  <div class="tab active" onclick="show('overlap',this)">중첩 정류장</div>
-  <div class="tab" onclick="show('gosok',this)">고속터미널</div>
-  <div class="tab" onclick="show('gangnam',this)">강남역</div>
-  <div class="tab" onclick="show('hongdae',this)">홍대입구</div>
-  <div class="tab" onclick="show('compare',this)">비교</div>
-</div>
+    <div class="art">
+      <img class="heart" src="images/heart.webp" alt="하트 모양 렌즈 속 소희와 태승">
+      <img class="sticker s-hearts" src="images/sticker-hearts.webp" alt="">
+      <img class="sticker s-note" src="images/sticker-heart-note.webp" alt="">
+      <img class="sticker s-l" src="images/sticker-heart.webp" alt="">
+      <img class="sticker s-r" src="images/sticker-heart.webp" alt="">
+    </div>
 
-<div id="tab-overlap" class="section active">
-  <div class="sec-label">노선 중첩 상위 10개 정류장</div>
-  <div id="stop-list"></div>
-</div>
+    <p class="greeting reveal">
+      결혼이 필수가 아닌 시대에서<br>
+      결혼이 아니어도 늘 함께일 거란<br>
+      확신이 있는 사람을 만나<br>
+      우리의 이야기를 노래하고 그려간 지<br>
+      10년째 되는 날,<br>
+      우리는 결혼식으로 이를 기념합니다.<br><br>
+      우리의 <span class="hl">10주년 파티</span>에 함께해 주세요!
+    </p>
 
-<div id="tab-gosok" class="section">
-  <div class="metric-row">
-    <div class="metric">
-      <div class="metric-label">경유 노선 수</div>
-      <div class="metric-value">9<span class="metric-unit">개</span></div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">중첩 횟수 순위</div>
-      <div class="metric-value" style="font-size:16px;margin-top:4px;">공동 <span style="font-size:22px">1</span>위</div>
-    </div>
-  </div>
-  <div class="card" style="margin-bottom:10px">
-    <div style="font-size:12px;color:#aaa;margin-bottom:3px">정류장명</div>
-    <div style="font-size:15px;font-weight:600">고속터미널</div>
-    <div style="margin-top:8px">
-      <a class="naver-link" href="https://map.naver.com/v5/search/%EA%B3%A0%EC%86%8D%ED%84%B0%EB%AF%B8%EB%84%90+%EB%B2%84%EC%8A%A4%EC%A0%95%EB%A5%98%EC%9E%A5" target="_blank">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#03c75a" stroke-width="2.5" width="13" height="13"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        네이버 지도에서 보기
-      </a>
-    </div>
-  </div>
-  <div class="sec-label">경유 노선 목록</div>
-  <div id="gosok-routes"></div>
-</div>
+    <img class="strip reveal" src="images/savethedate.webp" alt="SAVE THE DATE 26.11.29 네 컷 사진" loading="lazy">
 
-<div id="tab-gangnam" class="section">
-  <div class="metric-row">
-    <div class="metric">
-      <div class="metric-label">경유 노선 수</div>
-      <div class="metric-value">9<span class="metric-unit">개</span></div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">등급 구성</div>
-      <div style="margin-top:6px"><span class="grade-SSA">SSA</span> <span style="font-size:12px;color:#aaa">전체</span></div>
-    </div>
-  </div>
-  <div class="card" style="margin-bottom:10px">
-    <div style="font-size:12px;color:#aaa;margin-bottom:7px">실제 정류장 구분</div>
-    <table>
-      <tr><td>지하철2호선강남역</td><td>7개 노선</td></tr>
-      <tr><td>신분당선강남역</td><td>7개 노선</td></tr>
-      <tr><td>기타 명칭</td><td>5개 정류장 분산</td></tr>
-    </table>
-  </div>
-  <div class="sec-label">경유 노선 목록</div>
-  <div id="gangnam-routes"></div>
-</div>
+    <p class="when reveal">
+      <b>2026.11.29</b> 일요일 오후 <b>14:40</b><br>
+      더 베뉴지 서울 2층 베뉴지 홀
+    </p>
+  </section>
 
-<div id="tab-hongdae" class="section">
-  <div class="metric-row">
-    <div class="metric">
-      <div class="metric-label">경유 노선 수</div>
-      <div class="metric-value">5<span class="metric-unit">개</span></div>
+  <!-- 2. 커플 사진 + 애기 사진 깜빡깜빡 -->
+  <section class="couple">
+    <div class="photo reveal">
+      <img class="main" src="images/couple.webp" alt="태승과 소희" loading="lazy">
+      <div class="baby groom"><img src="images/baby-groom.webp" alt="아기 태승" loading="lazy"></div>
+      <div class="baby bride"><img src="images/baby-bride.webp" alt="아기 소희" loading="lazy"></div>
     </div>
-    <div class="metric">
-      <div class="metric-label">정류장 형태</div>
-      <div class="metric-text">단일 정류장</div>
+    <div class="names reveal">
+      <div>
+        <div class="parents">이치수 · 정현옥의 장남</div>
+        <div class="name"><small>신랑</small>이태승</div>
+      </div>
+      <div>
+        <div class="parents">원용찬 · 박춘자의 차녀</div>
+        <div class="name"><small>신부</small>원소희</div>
+      </div>
     </div>
-  </div>
-  <div class="card" style="margin-bottom:10px">
-    <div style="font-size:12px;color:#aaa;margin-bottom:3px">정류장명</div>
-    <div style="font-size:15px;font-weight:600">홍대입구역</div>
-    <div style="margin-top:8px">
-      <a class="naver-link" href="https://map.naver.com/v5/search/%ED%99%8D%EB%8C%80%EC%9E%85%EA%B5%AC%EC%97%AD+%EB%B2%84%EC%8A%A4%EC%A0%95%EB%A5%98%EC%9E%A5" target="_blank">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#03c75a" stroke-width="2.5" width="13" height="13"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        네이버 지도에서 보기
-      </a>
-    </div>
-  </div>
-  <div class="sec-label">경유 노선 목록</div>
-  <div id="hongdae-routes"></div>
-</div>
+  </section>
 
-<div id="tab-compare" class="section">
-  <div class="sec-label">3개 정류장 비교</div>
-  <div class="card">
-    <div class="compare-title"><span class="dot" style="background:#1a1a1a"></span>고속터미널</div>
-    <table>
-      <tr><td>경유 노선</td><td>9개</td></tr>
-      <tr><td>중첩 횟수</td><td>18회 (공동 1위)</td></tr>
-      <tr><td>등급 구성</td><td>SSA 6 · SA 3</td></tr>
-      <tr><td>정류장 형태</td><td>단일 명칭</td></tr>
-      <tr><td>주요 방면</td><td>잠실·반포·강남·영등포</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <div class="compare-title"><span class="dot" style="background:#e24b4a"></span>강남역</div>
-    <table>
-      <tr><td>경유 노선</td><td>9개</td></tr>
-      <tr><td>최다 중첩</td><td>13회 (2호선·신분당선)</td></tr>
-      <tr><td>등급 구성</td><td>SSA 9</td></tr>
-      <tr><td>정류장 형태</td><td>7개 명칭 분산</td></tr>
-      <tr><td>주요 방면</td><td>종로·여의도·용산·잠실</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <div class="compare-title"><span class="dot" style="background:#03c75a"></span>홍대입구</div>
-    <table>
-      <tr><td>경유 노선</td><td>5개</td></tr>
-      <tr><td>중첩 횟수</td><td>9회 (왕복 포함)</td></tr>
-      <tr><td>등급 구성</td><td>SA 4 · A 1</td></tr>
-      <tr><td>정류장 형태</td><td>단일 명칭</td></tr>
-      <tr><td>주요 방면</td><td>신촌·목동·상암·종로</td></tr>
-    </table>
-  </div>
-  <div class="info-box">
-    고속터미널은 SSA+SA 혼합으로 가장 폭넓은 등급 커버리지. 강남역은 SSA 전용이지만 정류장 명칭이 분산. 홍대입구는 노선 수 적지만 단일 정류장으로 집중도 높음.
-  </div>
-</div>
+  <!-- 3. Wedding Day -->
+  <section class="day">
+    <h2 class="script section-title reveal" data-text="Wedding Day">Wedding Day</h2>
+    <p class="date-ko reveal">2026년 11월 29일 일요일 오후 2시 40분</p>
+    <div class="cal-wrap reveal">
+      <div class="cal" id="cal"></div>
+    </div>
+    <div class="dday reveal">
+      <div class="count" id="count">
+        <div><b id="cd-d">0</b><span>DAYS</span></div>
+        <div><b id="cd-h">0</b><span>HOUR</span></div>
+        <div><b id="cd-m">0</b><span>MIN</span></div>
+        <div><b id="cd-s">0</b><span>SEC</span></div>
+      </div>
+      <p id="dday-text"></p>
+    </div>
+  </section>
+
+  <!-- 4. 오시는 길 -->
+  <section class="location">
+    <h2 class="script section-title reveal" data-text="Location">Location</h2>
+    <div class="reveal">
+      <div class="venue-name">더 베뉴지 서울 · 2층 베뉴지 홀</div>
+      <div class="venue-addr">서울 강서구 강서로 388</div>
+      <a class="venue-tel" href="tel:02-2657-2100">02-2657-2100</a>
+      <div class="map-btns">
+        <a href="https://map.naver.com/p/search/%EB%8D%94%EB%B2%A0%EB%89%B4%EC%A7%80%EC%84%9C%EC%9A%B8" target="_blank" rel="noopener">네이버 지도</a>
+        <a href="https://map.kakao.com/?q=%EB%8D%94%EB%B2%A0%EB%89%B4%EC%A7%80%EC%84%9C%EC%9A%B8" target="_blank" rel="noopener">카카오맵</a>
+      </div>
+    </div>
+    <div class="guide reveal">
+      <dl><dt>지하철</dt><dd>5호선 발산역 3번 출구 도보 약 2분<br>9호선 양천향교역 6번 출구 도보 약 7분</dd></dl>
+      <dl><dt>주차</dt><dd>건물 내 주차장 이용 (2시간 무료)</dd></dl>
+    </div>
+  </section>
+
+  <!-- 5. 마음 전하실 곳 -->
+  <section class="gift">
+    <h2 class="script section-title reveal" data-text="With Love">With Love</h2>
+    <p class="lead reveal">참석이 어려우신 분들을 위해<br>계좌번호를 기재하였습니다.<br>너그러운 마음으로 양해 부탁드립니다.</p>
+    <div id="accounts" class="reveal"></div>
+  </section>
+
+  <!-- 6. 공유 -->
+  <section>
+    <div class="divider"></div>
+    <p style="margin-top:28px;font-size:14px">함께해 주셔서 감사합니다.</p>
+    <div class="share">
+      <button type="button" id="share-btn">공유하기</button>
+      <button type="button" class="ghost" id="copy-link">링크 복사</button>
+    </div>
+  </section>
+
+  <footer>태승 ♥ 소희 · 2026.11.29</footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-const stops=[
-  {name:'수유시장.성신여대미아캠퍼스앞',count:18},
-  {name:'미아역.신일중고',count:18},
-  {name:'도봉세무서.성북시장',count:18},
-  {name:'미아사거리역',count:18},
-  {name:'고속터미널',count:18},
-  {name:'미아리고개.미아리예술극장',count:16},
-  {name:'돈암사거리.성신여대입구',count:16},
-  {name:'삼선교.한성대학교',count:16},
-  {name:'논현역',count:16},
-  {name:'뱅뱅사거리',count:16}
-];
-const gosokRoutes=[
-  {route:'143',grade:'SSA',company:'대진여객',summary:'압구정·삼성 · 종로 · 대학로'},
-  {route:'360',grade:'SSA',company:'한국비알티자동차',summary:'테헤란로 · 잠실 · 여의도'},
-  {route:'452',grade:'SSA',company:'남성교통',summary:'강남대로 · 고속터미널 · 반포 · 흑석동'},
-  {route:'640',grade:'SSA',company:'중부운수',summary:'강남 · 영등포 · 목동'},
-  {route:'0411',grade:'SSA',company:'대원여객',summary:'용산역 · 이촌동 · 반포 · 교대역 · 강남역 · 양재역'},
-  {route:'4212',grade:'SSA',company:'우신운수',summary:'도산대로 · 사당 · 건대'},
-  {route:'142',grade:'SA',company:'아진교통',summary:'반포 · 고속터미널 · 논현사거리 · 신사역 · 돈암동'},
-  {route:'148',grade:'SA',company:'한성운수',summary:'고속터미널 · 신사역 · 압구정역 · 고대앞 · 수유역'},
-  {route:'345',grade:'SA',company:'태진운수',summary:'위례신도시 · 세곡동 · 송파 · 청담 · 압구정 · 고속터미널'}
-];
-const gangnamRoutes=[
-  {route:'140',grade:'SSA',company:'한국비알티자동차',summary:'강남대로 · 종로 · 대학로',stops:['지하철2호선강남역','신분당선강남역']},
-  {route:'360',grade:'SSA',company:'한국비알티자동차',summary:'테헤란로 · 잠실 · 여의도',stops:['지하철2호선강남역','강남역12번출구','강남역.역삼세무서']},
-  {route:'400',grade:'SSA',company:'삼성여객',summary:'강남대로 · 양재 · 한남동 · 남대문',stops:['지하철2호선강남역','신분당선강남역']},
-  {route:'421',grade:'SSA',company:'삼성여객',summary:'강남대로 · 이태원 · 명동',stops:['지하철2호선강남역','신분당선강남역','강남역','강남역하나은행']},
-  {route:'441',grade:'SSA',company:'우신버스',summary:'강남대로 · 뱅뱅사거리 · 양재역',stops:['지하철2호선강남역','신분당선강남역']},
-  {route:'452',grade:'SSA',company:'남성교통',summary:'강남대로 · 고속터미널 · 반포 · 흑석동',stops:['지하철2호선강남역','신분당선강남역']},
-  {route:'470',grade:'SSA',company:'다모아자동차',summary:'강남대로 · 종로 · 연세대',stops:['지하철2호선강남역','신분당선강남역']},
-  {route:'640',grade:'SSA',company:'중부운수',summary:'강남 · 영등포 · 목동',stops:['강남역','강남역.강남역사거리']},
-  {route:'0411',grade:'SSA',company:'대원여객',summary:'용산역 · 이촌동 · 반포 · 교대역 · 양재역',stops:['신분당선강남역']}
-];
-const hongdaeRoutes=[
-  {route:'273',grade:'SA',company:'메트로',summary:'신촌 · 홍대 · 종로 · 대학로 · 고대·경희대'},
-  {route:'602',grade:'SA',company:'오케이버스',summary:'광화문 · 이대역 · 신촌역 · 홍대역 · 목동'},
-  {route:'5714',grade:'SA',company:'보영운수',summary:'신촌 · 홍대 · 영등포'},
-  {route:'6716',grade:'SA',company:'세풍운수',summary:'이대 · 신촌홍대 · 온수역 · 신정네거리'},
-  {route:'7711',grade:'A',company:'신촌교통',summary:'홍대 · 상암'}
-];
+/* ── 여기만 고치면 되는 정보 ────────────────────── */
+const WEDDING = new Date('2026-11-29T14:40:00+09:00');
 
-function pin(){
-  return '<svg viewBox="0 0 24 24" fill="none" stroke="#03c75a" stroke-width="2.5" width="13" height="13"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>';
+// 계좌번호는 아직 기획안에 없어서 비워 두었어요. number에 채우면 복사 버튼이 켜져요.
+const ACCOUNTS = [
+  { side: '신랑측에게', list: [
+    { role: '신랑', name: '이태승', bank: '', number: '' },
+    { role: '아버지', name: '이치수', bank: '', number: '' },
+    { role: '어머니', name: '정현옥', bank: '', number: '' },
+  ]},
+  { side: '신부측에게', list: [
+    { role: '신부', name: '원소희', bank: '', number: '' },
+    { role: '아버지', name: '원용찬', bank: '', number: '' },
+    { role: '어머니', name: '박춘자', bank: '', number: '' },
+  ]},
+];
+/* ─────────────────────────────────────────────── */
+
+const $ = s => document.querySelector(s);
+const toast = msg => {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 1800);
+};
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+  }
 }
 
-// Overlap stops
-const sl=document.getElementById('stop-list');
-stops.forEach(s=>{
-  const pct=Math.round(s.count/18*100);
-  const q=encodeURIComponent(s.name+' 버스정류장');
-  sl.innerHTML+=`<div class="card">
-    <div class="card-row">
-      <div class="stop-name">${s.name}</div>
-      <div class="pill ${s.count===18?'pill-dark':'pill-mid'}">${s.count}회</div>
-    </div>
-    <div class="bar-wrap"><div class="bar" style="width:${pct}%"></div></div>
-    <a class="naver-link" href="https://map.naver.com/v5/search/${q}" target="_blank">${pin()} 지도 보기</a>
-  </div>`;
+// 달력 (예식일 기준 달)
+(function(){
+  const cal = $('#cal');
+  const y = WEDDING.getFullYear(), m = 10; // 11월 (0부터 시작)
+  const first = new Date(y, m, 1).getDay(), last = new Date(y, m + 1, 0).getDate();
+  let html = ['SUN','MON','TUE','WED','THU','FRI','SAT']
+    .map((d, i) => `<div class="dow${i === 0 ? ' sun' : ''}">${d}</div>`).join('');
+  for (let i = 0; i < first; i++) html += '<div></div>';
+  for (let d = 1; d <= last; d++) {
+    const dow = (first + d - 1) % 7, on = d === 29;
+    html += `<div class="d${dow === 0 ? ' sun' : ''}${on ? ' on' : ''}">${d}</div>`;
+  }
+  cal.innerHTML = html;
+})();
+
+// D-day 카운트다운
+(function tick(){
+  const diff = WEDDING - Date.now();
+  const text = $('#dday-text');
+  if (diff > 0) {
+    const s = Math.floor(diff / 1000);
+    $('#cd-d').textContent = Math.floor(s / 86400);
+    $('#cd-h').textContent = Math.floor(s % 86400 / 3600);
+    $('#cd-m').textContent = Math.floor(s % 3600 / 60);
+    $('#cd-s').textContent = s % 60;
+    // 한국 날짜 기준 D-day (시간 카운트다운과 별개로 날짜만 셈)
+    const kst = new Date(Date.now() + 9 * 3600000);
+    const dday = Math.round((Date.UTC(2026, 10, 29) - Date.UTC(kst.getUTCFullYear(), kst.getUTCMonth(), kst.getUTCDate())) / 86400000);
+    text.innerHTML = `태승 ♥ 소희의 10주년 파티까지 <em>${dday ? 'D-' + dday : 'D-DAY'}</em>`;
+    setTimeout(tick, 1000);
+  } else {
+    $('#count').hidden = true;
+    text.innerHTML = '태승 ♥ 소희가 <em>결혼했습니다</em>. 축하해 주셔서 감사합니다!';
+  }
+})();
+
+// 계좌번호
+$('#accounts').innerHTML = ACCOUNTS.map(g => `
+  <details class="acc">
+    <summary>${g.side}</summary>
+    ${g.list.map(a => {
+      const has = a.number.trim() !== '';
+      const line = has ? `${a.bank} ${a.number}` : '계좌번호 준비 중';
+      return `<div class="row">
+        <div><b>${a.role} ${a.name}</b>${line}</div>
+        <button type="button" class="copy" ${has ? `data-copy="${a.bank} ${a.number}"` : 'disabled'}>복사</button>
+      </div>`;
+    }).join('')}
+  </details>`).join('');
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-copy]');
+  if (!b) return;
+  await copyText(b.dataset.copy);
+  toast('계좌번호가 복사되었어요');
 });
 
-function renderRoutes(id, routes, showStops){
-  const el=document.getElementById(id);
-  if(!el) return;
-  routes.forEach(r=>{
-    const chips = showStops && r.stops
-      ? '<div class="stop-chips">'+r.stops.map(s=>`<span class="chip chip-hl">${s}</span>`).join('')+'</div>'
-      : '';
-    el.innerHTML+=`<div class="card">
-      <div class="route-header">
-        <div class="route-num">${r.route}</div>
-        <span class="grade-${r.grade}">${r.grade}</span>
-      </div>
-      <div class="route-co">${r.company}</div>
-      <div class="divider"></div>
-      <div class="route-summary">${r.summary}</div>
-      ${chips}
-    </div>`;
-  });
-}
+// 공유
+$('#copy-link').addEventListener('click', async () => { await copyText(location.href); toast('링크가 복사되었어요'); });
+$('#share-btn').addEventListener('click', async () => {
+  const data = { title: document.title, text: '2026.11.29 일요일 오후 2시 40분, 더 베뉴지 서울', url: location.href };
+  if (navigator.share) { try { await navigator.share(data); } catch {} }
+  else { await copyText(location.href); toast('링크가 복사되었어요'); }
+});
 
-renderRoutes('gosok-routes', gosokRoutes, false);
-renderRoutes('gangnam-routes', gangnamRoutes, true);
-renderRoutes('hongdae-routes', hongdaeRoutes, false);
-
-function show(id, el){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  el.classList.add('active');
-}
+// 스크롤 등장 효과
+const io = 'IntersectionObserver' in window && new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: .15 });
+document.querySelectorAll('.reveal').forEach(el => io ? io.observe(el) : el.classList.add('in'));
 </script>
 </body>
 </html>
